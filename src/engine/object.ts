@@ -1,6 +1,7 @@
+import { ZEvent } from "./event"
 import { CommonObject } from "./type"
 
-abstract class ZObject<T extends CommonObject = CommonObject> {
+abstract class ZObject<T extends CommonObject = CommonObject> extends ZEvent {
     protected _x = 0
     protected _y = 0
     protected _width = 50
@@ -28,6 +29,23 @@ abstract class ZObject<T extends CommonObject = CommonObject> {
     }
     public getY() {
         return this._y
+    }
+    public setPosition(x: number, y: number) {
+        this._x = x
+        this._y = y
+    }
+    public getPosition() {
+        return {x: this._x, y: this._y}
+    }
+    public getRect() {
+        return {
+            x1: this._x - this._width / 2,
+            y1: this._y - this._height / 2,
+            x2: this._x + this._width / 2,
+            y2: this._y + this._height / 2,
+            w: this._width,
+            h: this._height
+        }
     }
     public setX(x: number) {
         this._x = x

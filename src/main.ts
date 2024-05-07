@@ -1,3 +1,4 @@
+import { ZPolygon } from './engine'
 import { ZPolyline } from './engine/polyline'
 import { ZTable } from './shapes'
 import './style.css'
@@ -22,3 +23,12 @@ const polyline = new ZPolyline()
 polyline.setData('values', [[0, 0], [0.5, 0.5], [1, 0]])
 polyline.$setCtx(ctx)
 polyline.redraw()
+
+// polygon
+const polygon = new ZPolygon()
+polygon.setData('values', [[0, 0], [0.5, 0.5], [1, 0]])
+polygon.setData('fillColor', '#FF0000')
+polygon.$setCtx(ctx)
+polygon.setX(200)
+polygon.setY(200)
+polygon.redraw()

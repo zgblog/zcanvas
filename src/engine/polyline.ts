@@ -2,13 +2,21 @@ import { ZObject } from "./object";
 
 interface PolylineData {
     values: [number, number][]
+    strokeColor?: string | null
 }
 
-class ZPolyline extends ZObject<PolylineData> {
-    
-    public redraw(): void {
+class ZPolyline<T extends PolylineData = PolylineData> extends ZObject<T> {
+
+    constructor() {
+        super()
+        this._data.strokeColor = '#000'
+    }
+
+    protected outline(inner?: (g: CanvasRenderingContext2D) => void) {
         const g = this._g
         const values = this._data.values
+        typeof inner === 'function' && inner.call(this, g)
+        this._data.strokeColor && (g.strokeStyle = this._data.strokeColor)
         g.beginPath()
         let v = this.$calc(values[0])
         g.moveTo(v.x, v.y)
@@ -16,7 +24,13 @@ class ZPolyline extends ZObject<PolylineData> {
             v = this.$calc(values[i])
             g.lineTo(v.x, v.y)
         }
-        g.stroke()
+    }
+    
+    public redraw(): void {
+        this._g.save()
+        this.outline()
+        this._g.stroke()
+        this._g.restore()
     }
     private $calc(xy: [number, number]) {
         return {
@@ -26,4 +40,4 @@ class ZPolyline extends ZObject<PolylineData> {
     }
 }
 
-export {ZPolyline}
+export {ZPolyline, type PolylineData}
